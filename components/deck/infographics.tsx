@@ -49,7 +49,7 @@ const nonStateActors: ActorItem[] = [
 export function ActorsDiagram() {
   return (
     <motion.div variants={stagger} className="grid gap-5 lg:grid-cols-[1fr_auto_1fr] lg:items-stretch">
-      <ActorColumn label="A · Acteurs étatiques" items={stateActors} accent="ua" align="right" />
+      <ActorColumn label="A · Acteurs étatiques" items={stateActors} align="right" />
       <div className="relative flex items-center justify-center">
         <div className="hidden h-full w-px bg-gradient-to-b from-transparent via-border to-transparent lg:block" />
         <motion.div
@@ -60,7 +60,7 @@ export function ActorsDiagram() {
           Conflit
         </motion.div>
       </div>
-      <ActorColumn label="B · Acteurs non étatiques" items={nonStateActors} accent="sahel" align="left" />
+      <ActorColumn label="B · Acteurs non étatiques" items={nonStateActors} align="left" />
     </motion.div>
   )
 }
@@ -68,16 +68,14 @@ export function ActorsDiagram() {
 function ActorColumn({
   label,
   items,
-  accent,
   align,
 }: {
   label: string
   items: ActorItem[]
-  accent: "ua" | "sahel"
   align: "left" | "right"
 }) {
-  const text = accent === "ua" ? "text-ua" : "text-sahel"
-  const bar = accent === "ua" ? "bg-ua" : "bg-sahel"
+  const text = "text-primary"
+  const bar = "bg-primary"
   return (
     <div className="flex flex-col gap-3">
       <p className={cn("font-mono text-[11px] font-semibold uppercase tracking-[0.2em]", text, align === "right" && "lg:text-right")}>

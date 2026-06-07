@@ -1,7 +1,8 @@
 "use client"
 
 import type { ReactNode } from "react"
-import { motion } from "motion/react"
+import { useEffect } from "react"
+import { motion, useMotionValue, useTransform, animate } from "motion/react"
 import { cn } from "@/lib/utils"
 
 /* ---------- animation helpers ---------- */
@@ -48,26 +49,13 @@ export function Reveal({
   )
 }
 
-/* ---------- text bits ---------- */
+/* ---------- text primitives ---------- */
 
-export function Kicker({
-  children,
-  color = "primary",
-}: {
-  children: ReactNode
-  color?: "primary" | "ua" | "sd" | "sahel" | "rdc"
-}) {
-  const dot: Record<string, string> = {
-    primary: "bg-primary",
-    ua: "bg-ua",
-    sd: "bg-sd",
-    sahel: "bg-sahel",
-    rdc: "bg-rdc",
-  }
+export function Kicker({ children }: { children: ReactNode }) {
   return (
     <Reveal>
       <span className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.28em] text-muted-foreground">
-        <span className={cn("h-1.5 w-1.5 rounded-full", dot[color])} />
+        <span className="h-1.5 w-1.5 rounded-full bg-primary" />
         {children}
       </span>
     </Reveal>
@@ -105,105 +93,95 @@ export function Lead({ children }: { children: ReactNode }) {
   )
 }
 
-/* ---------- map frame ---------- */
+/* ---------- stat card with count-up ---------- */
 
-export function MapFrame({
-  src,
-  alt,
-  caption,
-}: {
-  src: string
-  alt: string
-  caption?: string
-}) {
-  return (
-    <Reveal className="group">
-      <figure className="overflow-hidden rounded-xl border border-border bg-card shadow-2xl shadow-black/40">
-        <div className="overflow-hidden">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={src || "/placeholder.svg"}
-            alt={alt}
-            crossOrigin="anonymous"
-            className="h-full w-full object-cover transition-transform duration-[1.4s] ease-out group-hover:scale-[1.03]"
-          />
-        </div>
-        {caption ? (
-          <figcaption className="flex items-center gap-2 border-t border-border bg-secondary/40 px-4 py-2.5 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
-            <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-            {caption}
-          </figcaption>
-        ) : null}
-      </figure>
-    </Reveal>
-  )
+function parseStatValue(raw: string): { prefix: string; num: number; suffix: string } | null {
+  const m = raw.match(/^([^0-9]*)([0-9][0-9\s]*)([,.](\d+))?([\s\S]*)$/)
+  if (!m) return null
+  const intPart = m[2].replace(/\s/g, "")
+  const decPart = m[4] ?? ""
+  const num = parseFloat(`${intPart}${decPart ? "." + decPart : ""}`)
+  if (isNaN(num)) return null
+  return { prefix: m[1], num, suffix: m[5] }
 }
 
-/* ---------- cards ---------- */
+function CountUp({ raw }: { raw: string }) {
+  const parsed = parseStatValue(raw)
+  const mv = useMotionValue(0)
+  const display = useTransform(mv, (v) => {
+    if (!parsed) return raw
+    const rounded = parsed.num % 1 === 0 ? Math.round(v) : Math.round(v * 10) / 10
+    const formatted = rounded.toLocaleString("fr-FR")
+    return `${parsed.prefix}${formatted}${parsed.suffix}`
+  })
 
-export function StatCard({
-  value,
-  label,
-  accent = "primary",
-}: {
-  value: string
-  label: string
-  accent?: "primary" | "ua" | "sd" | "sahel" | "rdc"
-}) {
-  const text: Record<string, string> = {
-    primary: "text-primary",
-    ua: "text-ua",
-    sd: "text-sd",
-    sahel: "text-sahel",
-    rdc: "text-rdc",
-  }
+  useEffect(() => {
+    if (!parsed) return
+    const ctrl = animate(mv, parsed.num, {
+      duration: 1.8,
+      ease: [0.16, 1, 0.3, 1],
+    })
+    return ctrl.stop
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  if (!parsed) return <>{raw}</>
+  return <motion.span>{display}</motion.span>
+}
+
+export function StatCard({ value, label }: { value: string; label: string }) {
   return (
     <motion.div
       variants={riseItem}
-      className="rounded-xl border border-border bg-card/60 p-5 backdrop-blur"
+      className="group relative overflow-hidden rounded-xl border border-border bg-card/60 p-6 backdrop-blur"
     >
-      <div className={cn("font-heading text-3xl font-semibold md:text-4xl", text[accent])}>
-        {value}
+      {/* top accent bar — animates in */}
+      <motion.div
+        className="absolute inset-x-0 top-0 h-[2px] origin-left bg-primary"
+        initial={{ scaleX: 0 }}
+        animate={{ scaleX: 1 }}
+        transition={{ delay: 0.35, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+      />
+
+      {/* number */}
+      <div className="font-heading text-5xl font-bold tracking-tight text-foreground md:text-6xl">
+        <CountUp raw={value} />
       </div>
-      <div className="mt-1 text-sm leading-snug text-muted-foreground">{label}</div>
+
+      {/* label */}
+      <div className="mt-3 text-[13px] leading-snug text-muted-foreground">{label}</div>
     </motion.div>
   )
 }
+
+/* ---------- point card ---------- */
 
 export function PointCard({
   index,
   title,
   children,
-  accent = "primary",
 }: {
   index?: string
   title: string
   children: ReactNode
-  accent?: "primary" | "ua" | "sd" | "sahel" | "rdc"
 }) {
-  const bar: Record<string, string> = {
-    primary: "bg-primary",
-    ua: "bg-ua",
-    sd: "bg-sd",
-    sahel: "bg-sahel",
-    rdc: "bg-rdc",
-  }
   return (
     <motion.div
       variants={riseItem}
       className="relative overflow-hidden rounded-xl border border-border bg-card/60 p-5 backdrop-blur"
     >
-      <span className={cn("absolute inset-y-0 left-0 w-1", bar[accent])} />
-      <div className="flex items-baseline gap-3">
-        {index ? (
+      <span className="absolute inset-y-0 left-0 w-[3px] bg-primary" />
+      <div className="flex items-baseline gap-3 pl-1">
+        {index && (
           <span className="font-mono text-xs text-muted-foreground">{index}</span>
-        ) : null}
+        )}
         <h3 className="font-heading text-lg font-semibold tracking-tight">{title}</h3>
       </div>
-      <div className="mt-2 text-sm leading-relaxed text-muted-foreground">{children}</div>
+      <div className="mt-2 pl-1 text-sm leading-relaxed text-muted-foreground">{children}</div>
     </motion.div>
   )
 }
+
+/* ---------- bullets ---------- */
 
 export function Bullets({ items }: { items: string[] }) {
   return (
@@ -221,6 +199,8 @@ export function Bullets({ items }: { items: string[] }) {
     </motion.ul>
   )
 }
+
+/* ---------- grid ---------- */
 
 export function Grid({
   children,

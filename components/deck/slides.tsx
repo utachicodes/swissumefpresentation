@@ -109,36 +109,31 @@ function Cover() {
 /* =================== 1. INTRO =================== */
 /* =================== SOMMAIRE =================== */
 function Sommaire() {
-  const parts: { num: string; title: string; sub?: string[]; color: string }[] = [
+  const parts: { num: string; title: string; sub?: string[] }[] = [
     {
       num: "I",
       title: "Les conflits contemporains en Europe : le cas de l'Ukraine",
       sub: ["Origines", "Déroulement", "Conséquences géopolitiques"],
-      color: "text-ua",
     },
     {
       num: "II",
       title: "Les conflits contemporains en Afrique",
       sub: ["Le Sahel", "Le Soudan", "L'est de la RDC"],
-      color: "text-sahel",
     },
     {
       num: "III",
       title: "Les acteurs des conflits contemporains",
       sub: ["Acteurs étatiques", "Acteurs non étatiques"],
-      color: "text-sd",
     },
     {
       num: "IV",
       title: "Analyse comparative des conflits",
       sub: ["Des causes communes", "Des conséquences convergentes"],
-      color: "text-rdc",
     },
     {
       num: "V",
       title: "Perspectives de résolution et enjeux pour l'avenir",
       sub: ["Le rôle des organisations internationales", "Les solutions envisageables"],
-      color: "text-primary",
     },
   ]
   return (
@@ -150,7 +145,7 @@ function Sommaire() {
         {parts.map((p, i) => (
           <Reveal key={p.num} delay={i * 0.08}>
             <div className="flex gap-4 border-l border-border pl-5">
-              <span className={`font-heading text-3xl font-semibold leading-none ${p.color}`}>
+              <span className="font-heading text-3xl font-semibold leading-none text-primary">
                 {p.num}
               </span>
               <div>
@@ -221,8 +216,7 @@ function PartDivider({
   subtitle: string
   color: "ua" | "sahel" | "primary"
 }) {
-  const text =
-    color === "ua" ? "text-ua" : color === "sahel" ? "text-sahel" : "text-primary"
+  const text = "text-primary"
   return (
     <Slide className="items-start">
       <div className="absolute inset-0 -z-10 bg-grid opacity-40" />
@@ -246,7 +240,7 @@ function UkraineOrigins() {
   return (
     <Slide>
       <div className="flex flex-col gap-7">
-        <Kicker color="ua">I. Europe · le cas de l'Ukraine</Kicker>
+        <Kicker>I. Europe · le cas de l'Ukraine</Kicker>
         <Title>A. Origines du conflit</Title>
         <Lead>
           Le conflit trouve son origine dans des tensions politiques,
@@ -254,15 +248,15 @@ function UkraineOrigins() {
           l'Ukraine en 1991.
         </Lead>
         <Grid className="md:grid-cols-3">
-          <PointCard index="1991" title="Rapprochement occidental" accent="ua">
+          <PointCard index="1991" title="Rapprochement occidental">
             Après son indépendance, l'Ukraine se rapproche de l'Europe. La Russie
             la considère comme faisant partie de sa zone d'influence.
           </PointCard>
-          <PointCard index="2014" title="Annexion de la Crimée" accent="ua">
+          <PointCard index="2014" title="Annexion de la Crimée">
             À la suite d'un changement de gouvernement, la Russie annexe la
             péninsule ukrainienne située sur la mer Noire.
           </PointCard>
-          <PointCard index="2014" title="Donbass" accent="ua">
+          <PointCard index="2014" title="Donbass">
             Des mouvements séparatistes pro-russes apparaissent à l'est,
             provoquant des affrontements armés.
           </PointCard>
@@ -278,7 +272,7 @@ function UkraineCourse() {
       <div className="grid gap-10 lg:grid-cols-[1.15fr_1fr] lg:items-center">
         <UkraineConflictMap />
         <div className="flex flex-col gap-6">
-          <Kicker color="ua">I. Ukraine · Déroulement</Kicker>
+          <Kicker>I. Ukraine · Déroulement</Kicker>
           <Title>B. Déroulement</Title>
           <Bullets
             items={[
@@ -298,20 +292,20 @@ function UkraineConsequences() {
   return (
     <Slide>
       <div className="flex flex-col gap-7">
-        <Kicker color="ua">I. Ukraine · Conséquences</Kicker>
+        <Kicker>I. Ukraine · Conséquences</Kicker>
         <Title>C. Conséquences du conflit</Title>
         <Grid className="grid-cols-2 md:grid-cols-4">
-          <StatCard value="+150 000" label="Morts (combattants et civils)" accent="ua" />
-          <StatCard value="+10 M" label="Réfugiés et déplacés" accent="ua" />
-          <StatCard value="−30 %" label="Contraction du PIB ukrainien (2022)" accent="ua" />
-          <StatCard value="Monde" label="Hausse des prix de l'énergie et de l'alimentation" accent="ua" />
+          <StatCard value="+150 000" label="Morts (combattants et civils)" />
+          <StatCard value="+10 M" label="Réfugiés et déplacés" />
+          <StatCard value="−30 %" label="Contraction du PIB ukrainien (2022)" />
+          <StatCard value="Monde" label="Hausse des prix de l'énergie et de l'alimentation" />
         </Grid>
         <Grid className="md:grid-cols-2">
-          <PointCard title="Destructions massives" accent="ua">
+          <PointCard title="Destructions massives">
             Logements, écoles, hôpitaux et routes détruits ; accès humanitaire
             difficile dans les zones de combat.
           </PointCard>
-          <PointCard title="Répercussions géopolitiques" accent="ua">
+          <PointCard title="Répercussions géopolitiques">
             Renforcement des tensions politiques et militaires en Europe, avec un
             impact qui dépasse largement les frontières ukrainiennes.
           </PointCard>
@@ -327,7 +321,7 @@ function Sahel() {
     <Slide>
       <div className="grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:items-center">
         <div className="flex flex-col gap-6">
-          <Kicker color="sahel">II. Afrique · le Sahel</Kicker>
+          <Kicker>II. Afrique · le Sahel</Kicker>
           <Title>D'une crise locale à un défi géopolitique majeur</Title>
           <Lead>
             Mali, Burkina Faso et Niger occupent une position stratégique entre
@@ -352,24 +346,24 @@ function SahelSpiral() {
   return (
     <Slide>
       <div className="flex flex-col gap-7">
-        <Kicker color="sahel">II. Le Sahel</Kicker>
+        <Kicker>II. Le Sahel</Kicker>
         <Title>Une spirale qui dépasse le terrorisme</Title>
         <Grid className="md:grid-cols-3">
-          <PointCard index="2013" title="Opération Serval" accent="sahel">
+          <PointCard index="2013" title="Opération Serval">
             La France intervient pour stopper l'avancée vers Bamako. Plusieurs
             villes sont reprises, mais les causes profondes demeurent.
           </PointCard>
-          <PointCard index="2014" title="Barkhane & MINUSMA" accent="sahel">
+          <PointCard index="2014" title="Barkhane & MINUSMA">
             L'intervention s'élargit à plusieurs pays ; l'ONU déploie la MINUSMA
             pour stabiliser le Mali et protéger les civils.
           </PointCard>
-          <PointCard index="2020–23" title="Vague de coups d'État" accent="sahel">
+          <PointCard index="2020–23" title="Vague de coups d'État">
             Mali (2020, 2021), Burkina Faso (2022), Niger (2023) : perte de
             confiance entre populations, armées et gouvernements.
           </PointCard>
         </Grid>
         <Reveal>
-          <p className="rounded-xl border border-sahel/30 bg-sahel/5 p-5 text-pretty leading-relaxed text-foreground">
+          <p className="rounded-xl border border-primary/30 bg-primary/5 p-5 text-pretty leading-relaxed text-foreground">
             Réduire la situation au seul terrorisme serait une erreur : c'est une
             crise large combinant faiblesse de l'État, marginalisation, pauvreté,
             chômage et absence de services publics. La réponse militaire, seule,
@@ -388,7 +382,7 @@ function Soudan() {
       <div className="grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:items-center">
         <SudanMap />
         <div className="flex flex-col gap-6">
-          <Kicker color="sd">II. Afrique · le Soudan</Kicker>
+          <Kicker>II. Afrique · le Soudan</Kicker>
           <Title>Une guerre entre deux armées</Title>
           <Lead>
             Sur fond d'effondrement de l'État, la guerre n'a pas commencé en 2023 :
@@ -412,20 +406,20 @@ function SoudanStats() {
   return (
     <Slide>
       <div className="flex flex-col gap-7">
-        <Kicker color="sd">II. Le Soudan</Kicker>
+        <Kicker>II. Le Soudan</Kicker>
         <Title>Un État fracturé, une crise régionale</Title>
         <Grid className="grid-cols-2 md:grid-cols-4">
-          <StatCard value="+25 000" label="Morts estimés" accent="sd" />
-          <StatCard value="+8 M" label="Déplacés" accent="sd" />
-          <StatCard value="+150 %" label="Inflation galopante" accent="sd" />
-          <StatCard value="−18,3 %" label="Chute du PIB (2023)" accent="sd" />
+          <StatCard value="+25 000" label="Morts estimés" />
+          <StatCard value="+8 M" label="Déplacés" />
+          <StatCard value="+150 %" label="Inflation galopante" />
+          <StatCard value="−18,3 %" label="Chute du PIB (2023)" />
         </Grid>
         <Grid className="md:grid-cols-2">
-          <PointCard title="Fragmentation du territoire" accent="sd">
+          <PointCard title="Fragmentation du territoire">
             Chaque camp contrôle des zones et des axes stratégiques, rendant
             l'État incapable d'exercer une autorité unifiée.
           </PointCard>
-          <PointCard title="Onde de choc régionale" accent="sd">
+          <PointCard title="Onde de choc régionale">
             Des centaines de milliers de réfugiés fuient vers le Tchad, le Soudan
             du Sud, l'Égypte et la Centrafrique, déjà vulnérables.
           </PointCard>
@@ -441,7 +435,7 @@ function Rdc() {
     <Slide>
       <div className="grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:items-center">
         <div className="flex flex-col gap-6">
-          <Kicker color="rdc">II. Afrique · l'est de la RDC</Kicker>
+          <Kicker>II. Afrique · l'est de la RDC</Kicker>
           <Title>Une guerre au cœur des richesses minérales</Title>
           <Lead>
             Or, diamants, étain, tungstène et surtout le coltan, essentiel à
@@ -488,15 +482,15 @@ function Comparaison() {
         <Kicker>IV. Analyse comparative</Kicker>
         <Title>A. Des causes communes</Title>
         <Grid className="md:grid-cols-3">
-          <PointCard index="1" title="Fragilité des États" accent="primary">
+          <PointCard index="1" title="Fragilité des États">
             Sahel, Soudan, RDC : l'État peine à contrôler son territoire et à
             garantir la sécurité des populations.
           </PointCard>
-          <PointCard index="2" title="Compétition pour les ressources" accent="primary">
+          <PointCard index="2" title="Compétition pour les ressources">
             Coltan, or et cobalt en RDC ; mines au Soudan ; terre et eau entre
             agriculteurs et éleveurs au Sahel.
           </PointCard>
-          <PointCard index="3" title="Divisions communautaires" accent="primary">
+          <PointCard index="3" title="Divisions communautaires">
             Rivalités ethniques, religieuses et identitaires exploitées par des
             acteurs politiques ou militaires.
           </PointCard>
@@ -514,15 +508,15 @@ function ConsequencesCommunes() {
         <Kicker>IV. Analyse comparative</Kicker>
         <Title>B. Des conséquences communes</Title>
         <Grid className="md:grid-cols-3">
-          <PointCard index="1" title="Grave crise humanitaire" accent="primary">
+          <PointCard index="1" title="Grave crise humanitaire">
             Des millions de personnes ont besoin d'aide ; l'insécurité limite
             l'accès à la nourriture, aux soins et à l'éducation.
           </PointCard>
-          <PointCard index="2" title="Déplacements massifs" accent="primary">
+          <PointCard index="2" title="Déplacements massifs">
             Le Soudan connaît l'une des plus grandes crises de déplacement au
             monde ; la RDC compte des millions de déplacés internes.
           </PointCard>
-          <PointCard index="3" title="Recul économique" accent="primary">
+          <PointCard index="3" title="Recul économique">
             Infrastructures détruites, activités agricoles et commerciales
             perturbées, chute des investissements.
           </PointCard>
@@ -544,12 +538,12 @@ function Organisations() {
           multilatéralisme face aux intérêts des grandes puissances.
         </Lead>
         <Grid className="md:grid-cols-2">
-          <PointCard title="L'ONU, un rôle central mais bloqué" accent="primary">
+          <PointCard title="L'ONU, un rôle central mais bloqué">
             En Ukraine, le veto russe au Conseil de sécurité empêche certaines
             décisions. En Afrique, des missions comme la MONUSCO sont critiquées
             pour leur manque d'efficacité.
           </PointCard>
-          <PointCard title="Les organisations régionales" accent="primary">
+          <PointCard title="Les organisations régionales">
             En Europe, l'UE et l'OTAN soutiennent fortement l'Ukraine. En Afrique,
             l'UA et la CEDEAO cherchent des solutions africaines, mais manquent de
             moyens financiers et logistiques.
@@ -595,8 +589,8 @@ function Conclusion() {
 
       <div className="mt-8 grid w-full gap-5 md:grid-cols-2">
         <Reveal>
-          <div className="h-full rounded-xl border border-ua/30 bg-ua/5 p-6">
-            <p className="font-mono text-xs uppercase tracking-[0.25em] text-ua">
+          <div className="h-full rounded-xl border border-primary/30 bg-primary/5 p-6">
+            <p className="font-mono text-xs uppercase tracking-[0.25em] text-primary">
               En Europe
             </p>
             <p className="mt-3 font-heading text-lg font-medium text-foreground">
@@ -609,8 +603,8 @@ function Conclusion() {
           </div>
         </Reveal>
         <Reveal delay={0.1}>
-          <div className="h-full rounded-xl border border-sahel/30 bg-sahel/5 p-6">
-            <p className="font-mono text-xs uppercase tracking-[0.25em] text-sahel">
+          <div className="h-full rounded-xl border border-primary/30 bg-primary/5 p-6">
+            <p className="font-mono text-xs uppercase tracking-[0.25em] text-primary">
               En Afrique
             </p>
             <p className="mt-3 font-heading text-lg font-medium text-foreground">
@@ -661,7 +655,7 @@ export const slides = [
     node: (
       <PartDivider
         num="I"
-        color="ua"
+       
         title="Les conflits contemporains en Europe"
         subtitle="Le cas de l'Ukraine : origines, déroulement et conséquences."
       />
@@ -676,7 +670,7 @@ export const slides = [
     node: (
       <PartDivider
         num="II"
-        color="sahel"
+       
         title="Les conflits contemporains en Afrique"
         subtitle="Le Sahel, le Soudan et l'est de la RDC."
       />
