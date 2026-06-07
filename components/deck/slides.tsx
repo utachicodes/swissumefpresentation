@@ -704,7 +704,7 @@ function Thanks() {
           transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
           className="font-mono text-[11px] uppercase tracking-[0.32em] text-muted-foreground"
         >
-          Swiss Umef University · 2024–2025
+          Swiss Umef University · 2025–2026
         </motion.p>
 
         {/* divider */}
