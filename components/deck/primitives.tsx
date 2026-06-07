@@ -143,7 +143,7 @@ export function StatCard({ value, label }: { value: string; label: string }) {
       />
 
       {/* number */}
-      <div className="font-heading text-5xl font-bold tracking-tight text-foreground md:text-6xl">
+      <div className="whitespace-nowrap font-heading text-4xl font-bold tracking-tight text-foreground md:text-5xl">
         <CountUp raw={value} />
       </div>
 
