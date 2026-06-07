@@ -4,12 +4,34 @@ import { useCallback, useEffect, useState } from "react"
 import { AnimatePresence, motion } from "motion/react"
 import { slides } from "./slides"
 
+const variants = {
+  enter: (dir: number) => ({
+    x: dir > 0 ? "5%" : "-5%",
+    opacity: 0,
+    scale: 0.975,
+  }),
+  center: {
+    x: 0,
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.52, ease: [0.22, 1, 0.36, 1] as const },
+  },
+  exit: (dir: number) => ({
+    x: dir > 0 ? "-3.5%" : "3.5%",
+    opacity: 0,
+    scale: 0.97,
+    transition: { duration: 0.26, ease: [0.55, 0, 1, 0.45] as const },
+  }),
+}
+
 export function Deck() {
   const [index, setIndex] = useState(0)
+  const [direction, setDirection] = useState<1 | -1>(1)
   const total = slides.length
 
   const go = useCallback(
     (dir: 1 | -1) => {
+      setDirection(dir)
       setIndex((i) => Math.min(total - 1, Math.max(0, i + dir)))
     },
     [total],
@@ -19,8 +41,8 @@ export function Deck() {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "ArrowRight" || e.key === "PageDown") go(1)
       else if (e.key === "ArrowLeft" || e.key === "PageUp") go(-1)
-      else if (e.key === "Home") setIndex(0)
-      else if (e.key === "End") setIndex(total - 1)
+      else if (e.key === "Home") { setDirection(1); setIndex(0) }
+      else if (e.key === "End") { setDirection(1); setIndex(total - 1) }
     }
     window.addEventListener("keydown", onKey)
     return () => window.removeEventListener("keydown", onKey)
@@ -46,13 +68,15 @@ export function Deck() {
 
       {/* slide viewport */}
       <div className="h-full w-full overflow-y-auto">
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="wait" custom={direction}>
           <motion.div
             key={slides[index].id}
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            custom={direction}
+            variants={variants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            className="h-full"
           >
             {slides[index].node}
           </motion.div>
