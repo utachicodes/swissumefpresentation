@@ -11,8 +11,7 @@ import {
   StatCard,
   Title,
 } from "./primitives"
-import { motion, useMotionValue, useTransform, animate } from "motion/react"
-import { useEffect } from "react"
+import { motion } from "motion/react"
 import { CoverMap } from "./cover-map"
 import { OverviewMap } from "./maps/map-overview"
 import { UkraineConflictMap } from "./maps/map-ukraine"
@@ -692,35 +691,11 @@ export const slides = [
 ]
 
 /* =================== THANKS =================== */
-function HeroCountUp({ target, suffix }: { target: number; suffix: string }) {
-  const mv = useMotionValue(0)
-  const display = useTransform(mv, (v) => `${Math.round(v)}${suffix}`)
-  useEffect(() => {
-    const ctrl = animate(mv, target, { duration: 2.2, ease: [0.16, 1, 0.3, 1] })
-    return ctrl.stop
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
-  return <motion.span>{display}</motion.span>
-}
-
 function Thanks() {
   return (
     <Slide className="items-center justify-center overflow-hidden py-0 text-center">
       <div className="absolute inset-0 -z-10 bg-grid opacity-15" />
 
-      {/* ghost number — massive background layer */}
-      <motion.div
-        initial={{ opacity: 0, scale: 1.15 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.1, duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
-        aria-hidden
-        className="pointer-events-none absolute inset-0 flex items-center justify-center select-none"
-      >
-        <span className="font-heading text-[38vw] font-black leading-none tracking-tighter text-primary/[0.06] md:text-[28rem]">
-          67
-        </span>
-      </motion.div>
-
-      {/* foreground content */}
       <div className="relative z-10 flex flex-col items-center gap-6">
         {/* top label */}
         <motion.p
@@ -731,26 +706,6 @@ function Thanks() {
         >
           Swiss Umef University · 2024–2025
         </motion.p>
-
-        {/* hero stat */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.18, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="flex flex-col items-center"
-        >
-          <div className="font-heading text-[18vw] font-black leading-none tracking-tighter text-primary md:text-[13rem]">
-            <HeroCountUp target={67} suffix="M" />
-          </div>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.6, duration: 0.9 }}
-            className="mt-1 max-w-sm font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground"
-          >
-            personnes forcées de fuir — Ukraine, Sahel, Soudan, RDC
-          </motion.p>
-        </motion.div>
 
         {/* divider */}
         <motion.div
